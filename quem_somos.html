@@ -1,0 +1,169 @@
+  <!doctype html>
+  <html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Petzzy — Quem Somos</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href="index.html">Petzzy</a>
+        <nav class="nav">
+          <a href="servicos.html">Serviços</a>
+          <a href="agendamentos.html">Meus agendamentos</a>
+          <a href="quem_somos.html">Quem somos</a>
+          <a class="btn" href="login.html">Entrar</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- HERO CURTO -->
+    <section class="hero hero--soft">
+      <div class="container hero__mini">
+        <h1>Quem Somos</h1>
+        <p>Somos estudantes do <strong>UniCEUB</strong> criando uma plataforma simples e segura para o cuidado dos seus pets.</p>
+      </div>
+    </section>
+
+    <!-- CONTEÚDO -->
+    <main class="container pad-y">
+      <!-- Sobre -->
+      <section class="about grid-2 card">
+        <div>
+    <h2 class="h3" id="historia-titulo">Nossa história</h2>
+
+      <div id="historia-texto">
+          <p>
+            Somos estudantes do <strong>UniCEUB</strong>, apaixonados por tecnologia e pelo bem-estar dos animais.
+            Este projeto foi criado para conectar tutores a profissionais de confiança em serviços como
+            banho &amp; tosa, consultas veterinárias, passeios e adestramento.
+          </p>
+          <p>
+            Acreditamos que a tecnologia pode facilitar o cuidado com os animais de estimação,
+            garantindo mais <strong>praticidade, segurança e carinho</strong> para tutores e pets.
+          </p>
+          <p>
+            O <strong>Petzzy</strong> nasceu como um projeto acadêmico, com visão de se tornar uma solução real para a comunidade.
+          </p>
+      </div>
+      ...
+  </div>
+
+          <!-- badges rápidos -->
+          <ul class="badges">
+            <li class="badge">Praticidade</li>
+            <li class="badge">Segurança</li>
+            <li class="badge">Atendimento humanizado</li>
+          </ul>
+        </div>
+
+        <!-- Ilustra/Imagem opcional -->
+        <div class="about__ilustra" aria-hidden="true">
+          <!-- troque por uma imagem se quiser -->
+          <!-- <img src="assets/pets.jpg" alt="" /> -->
+          <span>🐾</span>
+        </div>
+      </section>
+
+      <!-- Missão / Visão / Valores -->
+      <section class="values">
+        <article class="value-card">
+          <h3 id="missao-titulo">Missão</h3>
+          <p id="missao-texto">Conectar tutores e profissionais...</p>
+        </article>
+        <article class="value-card">
+          <h3 id="visao-titulo">Visão</h3>
+          <p id="visao-texto">Ser referência em serviços...</p>
+        </article>
+        <article class="value-card">
+          <h3 id="valores-titulo">Valores</h3>
+          <p id="valores-texto">Respeito aos animais...</p>
+        </article>
+      </section>
+
+      <!-- CTA simples -->
+      <section class="cta card">
+        <h2 class="h3">Quer acompanhar nossa evolução?</h2>
+        <p>Em breve teremos novidades. Enquanto isso, explore serviços e faça um agendamento de teste.</p>
+        <a class="btn" href="servicos.html">Ver serviços</a>
+      </section>
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="footer">
+      © <span id="year"></span> Petzzy • Todos os direitos reservados
+    </footer>
+
+    <script>
+        // Garante que o script só rode depois que a página carregar completamente
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Coloque a URL do ngrok que você (Caio) vai gerar
+            const apiUrl = 'http://127.0.0.1:5000/sobre';
+
+            // Função principal para buscar e exibir os dados
+            async function carregarConteudo() {
+                try {
+                    const response = await fetch(apiUrl);
+
+                    // Verifica se a API respondeu com sucesso
+                    if (!response.ok) {
+                        throw new Error(`Erro na rede: ${response.status}`);
+                    }
+
+                    const dados = await response.json();
+                    renderizarDados(dados);
+
+                } catch (error) {
+                    console.error('Falha ao buscar dados da API:', error);
+                    // Opcional: Mostrar uma mensagem de erro na página
+                }
+            }
+
+            // Função para colocar os dados nos locais certos do HTML
+            function renderizarDados(dados) {
+                // Encontra o dado de cada seção na lista que veio da API
+                const historia = dados.find(item => item.secao === 'historia');
+                const missao = dados.find(item => item.secao === 'missao');
+                const visao = dados.find(item => item.secao === 'visao');
+                const valores = dados.find(item => item.secao === 'valores');
+
+                // Atualiza a seção "Nossa História"
+                if (historia) {
+                    document.getElementById('historia-titulo').textContent = historia.titulo;
+                    // Usamos .innerHTML para renderizar tags como <strong> que possam vir do banco
+                    document.getElementById('historia-texto').innerHTML = historia.texto; 
+                }
+
+                // Atualiza a seção "Missão"
+                if (missao) {
+                    document.getElementById('missao-titulo').textContent = missao.titulo;
+                    document.getElementById('missao-texto').textContent = missao.texto;
+                }
+
+                // Atualiza a seção "Visão"
+                if (visao) {
+                    document.getElementById('visao-titulo').textContent = visao.titulo;
+                    document.getElementById('visao-texto').textContent = visao.texto;
+                }
+
+                // Atualiza a seção "Valores"
+                if (valores) {
+                    document.getElementById('valores-titulo').textContent = valores.titulo;
+                    document.getElementById('valores-texto').textContent = valores.texto;
+                }
+            }
+
+            // Atualiza o ano no rodapé
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Chama a função principal para iniciar o processo!
+            carregarConteudo();
+        });
+    </script>
+  </body>
+  </html>
