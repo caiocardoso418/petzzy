@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Petzzy — Serviços</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="/">Petzzy</a>
+      <nav class="nav">
+        <a href="/servicos">Serviços</a>
+        <a href="/agendamentos">Meus agendamentos</a>
+        <a href="/quem_somos">Quem somos</a>
+        <a class="btn" href="/login">Entrar</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero hero--soft">
+    <div class="container hero__mini">
+      <h1>Serviços</h1>
+      <p>Escolha um serviço para saber mais e encontrar profissionais.</p>
+    </div>
+  </section>
+
+  <main class="container pad-y">
+    <section class="services">
+      <div class="services__cards" id="lista-servicos-container">
+          </div>
+
+      <aside class="service-details card" id="details">
+        <div class="service-details__head">
+          <img id="detIcon" src="" alt="" /> <div>
+            <h2 id="detTitle" class="h3"></h2>
+            <p id="detSubtitle" class="muted"></p>
+          </div>
+        </div>
+        <p id="detText"></p>
+        <ul id="detList" class="list list--check"></ul>
+        <div class="service-details__cta">
+          <a class="btn" href="#">Encontrar profissionais</a>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="footer">
+    © <span id="year"></span> Petzzy • Todos os direitos reservados
+  </footer>
+
+  <script src="/static/js/servicos.js"></script>
+</body>
+</html>

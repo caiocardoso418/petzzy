@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Petzzy — Formulário de Serviço</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="container topbar__inner">
+            <a class="brand" href="/admin">Petzzy (Admin)</a>
+        </div>
+    </header>
+
+    <main class="container pad-y">
+        <h1 id="form-title">Novo Serviço</h1>
+        
+        <form id="service-form" class="card admin-form">
+            <label for="slug">Slug (identificador único, ex: "banho-e-tosa")</label>
+            <input type="text" id="slug" class="input" required>
+            
+            <label for="nome">Nome do Serviço</label>
+            <input type="text" id="nome" class="input" required>
+
+            <label for="descricao_curta">Descrição Curta (subtítulo)</label>
+            <input type="text" id="descricao_curta" class="input">
+
+            <label for="descricao_longa">Descrição Longa (parágrafo)</label>
+            <textarea id="descricao_longa" class="input" rows="5"></textarea>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Salvar</button>
+                <a href="/admin" class="btn btn--ghost">Cancelar</a>
+            </div>
+        </form>
+    </main>
+    <script src="/static/js/admin_servico_form.js"></script>
+</body>
+</html>
