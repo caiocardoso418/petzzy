@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Petzzy — Painel de Administração</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="container topbar__inner">
+            <a class="brand" href="#">Petzzy (Admin)</a>
+            <nav class="nav"><a href="index.html">← Voltar para o site</a></nav>
+        </div>
+    </header>
+
+    <main class="container pad-y">
+        <h1>Dashboard</h1>
+
+        <div class="card" style="margin-bottom:18px">
+            <div class="admin-section-header">
+                <h2>Serviços</h2>
+                <a class="btn" href="admin_servico_form.html">+ Novo serviço</a>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr><th>#ID</th><th>Nome</th><th>Descrição Curta</th><th style="width:220px">Ações</th></tr>
+                </thead>
+                <tbody id="servicos-table-body">
+                    </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+             <div class="admin-section-header">
+                <h2>Quem Somos</h2>
+                <a class="btn" href="admin_quem_somos.html">Editar Conteúdo</a>
+            </div>
+            <p style="padding: 1rem;">Clique no botão acima para editar os textos das seções institucionais.</p>
+        </div>
+    </main>
+    <script src="js/admin.js"></script>
+</body>
+</html>
