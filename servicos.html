@@ -32,34 +32,7 @@
   <main class="container pad-y">
     <section class="services">
       <!-- Coluna esquerda: cards -->
-      <div class="services__cards">
-        <button class="service-card is-active" data-key="veterinario">
-          <div class="service-card__thumb">
-            <img src="assets/consulta.png" alt="" />
-          </div>
-          <span class="service-card__name">Veterinário</span>
-        </button>
-
-        <button class="service-card" data-key="banho">
-          <div class="service-card__thumb">
-            <img src="assets/banho.png" alt="" />
-          </div>
-          <span class="service-card__name">Banho &amp; Tosa</span>
-        </button>
-
-        <button class="service-card" data-key="adestramento">
-          <div class="service-card__thumb">
-            <img src="assets/adestramento.png" alt="" />
-          </div>
-          <span class="service-card__name">Adestramento</span>
-        </button>
-
-        <button class="service-card" data-key="dogwalk">
-          <div class="service-card__thumb">
-            <img src="assets/passeio.png" alt="" />
-          </div>
-          <span class="service-card__name">Dog Walk</span>
-        </button>
+      <div class="services__cards" id="lista-servicos-container">
       </div>
 
       <!-- Coluna direita: detalhes -->
@@ -93,70 +66,6 @@
     © <span id="year"></span> Petzzy • Todos os direitos reservados
   </footer>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Conteúdo dos serviços
-    const SERVICE_CONTENT = {
-      veterinario: {
-        title: "Veterinário",
-        subtitle: "Atendimento domiciliar e preventivo",
-        icon: "assets/consulta.png",
-        text: "Consultas em casa para conforto do pet: avaliação clínica, orientações de saúde, vacinas e pequenos procedimentos.",
-        bullets: ["Vacinação e check-up", "Orientação de alimentação e rotina", "Atendimento humanizado no ambiente do pet"],
-        query: "Veterinário"
-      },
-      banho: {
-        title: "Banho & Tosa",
-        subtitle: "Higiene, bem-estar e cuidado com carinho",
-        icon: "assets/banho.png",
-        text: "Banho relaxante, tosa conforme a raça e limpeza completa. Tudo feito por profissionais experientes.",
-        bullets: ["Tosa higiênica e completa", "Secagem segura e sem estresse", "Produtos adequados para cada tipo de pele"],
-        query: "Banho e tosa"
-      },
-      adestramento: {
-        title: "Adestramento",
-        subtitle: "Treino positivo para uma rotina equilibrada",
-        icon: "assets/adestramento.png",
-        text: "Aulas personalizadas com reforço positivo para melhorar obediência, socialização e reduzir comportamentos indesejados.",
-        bullets: ["Protocolos de reforço positivo", "Planos sob medida", "Acompanhamento da evolução"],
-        query: "Adestramento"
-      },
-      dogwalk: {
-        title: "Dog Walk",
-        subtitle: "Passeios seguros e divertidos",
-        icon: "assets/passeio.png",
-        text: "Passeios diários com dog walkers de confiança, respeitando o ritmo e as necessidades do seu pet.",
-        bullets: ["Roteiros seguros no bairro", "Relatório do passeio", "Horários flexíveis"],
-        query: "Passeios"
-      }
-    };
-
-    // Interação dos cards
-    const cards = document.querySelectorAll(".service-card");
-    const detIcon = document.getElementById("detIcon");
-    const detTitle = document.getElementById("detTitle");
-    const detSubtitle = document.getElementById("detSubtitle");
-    const detText = document.getElementById("detText");
-    const detList = document.getElementById("detList");
-    const detCta = document.querySelector(".service-details__cta a");
-
-    function selectService(key) {
-      const data = SERVICE_CONTENT[key];
-      if (!data) return;
-
-      cards.forEach(c => c.classList.toggle("is-active", c.dataset.key === key));
-      detIcon.src = data.icon;
-      detTitle.textContent = data.title;
-      detSubtitle.textContent = data.subtitle;
-      detText.textContent = data.text;
-      detList.innerHTML = data.bullets.map(b => `<li>${b}</li>`).join("");
-      detCta.href = `buscar.html?q=${encodeURIComponent(data.query)}`;
-    }
-
-    cards.forEach(card => {
-      card.addEventListener("click", () => selectService(card.dataset.key));
-    });
-  </script>
+  <script src="js/servicos.js"></script>
 </body>
 </html>
