@@ -120,7 +120,8 @@ Siga os passos abaixo para configurar e rodar a aplicação na sua máquina.
 
 ## 👥 Equipe
 
--   **Caio Peliz** - Product Owner & Backend
+-   **Caio Peliz** - Backend
 -   **João Pedro** - Frontend
 -   **Juan** - Backend
 -   **Maria Elis** - UI/UX Designer
+
