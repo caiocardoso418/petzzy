@@ -1,16 +1,21 @@
-// js/admin.js
 document.addEventListener('DOMContentLoaded', () => {
     const API_BASE_URL = 'http://127.0.0.1:5000';
-    const tableBody = document.getElementById('servicos-table-body');
+    
+    // --- ELEMENTOS DO DOM ---
+    const servicosTableBody = document.getElementById('servicos-table-body');
+    const quemSomosTableBody = document.getElementById('quemsomos-table-body');
 
+    // =======================================================
+    // LÓGICA PARA GERENCIAR SERVIÇOS
+    // =======================================================
     async function carregarServicos() {
         try {
             const response = await fetch(`${API_BASE_URL}/servicos`);
             const servicos = await response.json();
 
-            tableBody.innerHTML = ''; // Limpa a tabela antes de preencher
+            servicosTableBody.innerHTML = ''; 
             if (servicos.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="4">Nenhum serviço cadastrado.</td></tr>';
+                servicosTableBody.innerHTML = '<tr><td colspan="4">Nenhum serviço cadastrado.</td></tr>';
                 return;
             }
 
@@ -25,32 +30,26 @@ document.addEventListener('DOMContentLoaded', () => {
                         <button class="btn-sm btn-sm--danger" data-slug="${servico.slug}">Excluir</button>
                     </td>
                 `;
-                tableBody.appendChild(row);
+                servicosTableBody.appendChild(row);
             });
 
-            // Adiciona o evento de clique para todos os botões de excluir
-            document.querySelectorAll('.btn-sm--danger').forEach(button => {
-                button.addEventListener('click', handleExcluir);
+            document.querySelectorAll('#servicos-table-body .btn-sm--danger').forEach(button => {
+                button.addEventListener('click', handleExcluirServico);
             });
 
         } catch (error) {
             console.error('Erro ao carregar serviços:', error);
-            tableBody.innerHTML = '<tr><td colspan="4">Erro ao carregar serviços.</td></tr>';
+            servicosTableBody.innerHTML = '<tr><td colspan="4">Erro ao carregar serviços.</td></tr>';
         }
     }
 
-    async function handleExcluir(event) {
+    async function handleExcluirServico(event) {
         const slug = event.target.dataset.slug;
         if (confirm(`Tem certeza que deseja excluir o serviço "${slug}"?`)) {
             try {
-                const response = await fetch(`${API_BASE_URL}/servicos/${slug}`, {
-                    method: 'DELETE',
-                });
-
-                if (!response.ok) throw new Error('Falha ao excluir.');
-                
+                await fetch(`${API_BASE_URL}/servicos/${slug}`, { method: 'DELETE' });
                 alert('Serviço excluído com sucesso!');
-                carregarServicos(); // Recarrega a lista
+                carregarServicos();
             } catch (error) {
                 console.error('Erro ao excluir:', error);
                 alert('Não foi possível excluir o serviço.');
@@ -58,5 +57,58 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // =======================================================
+    // LÓGICA PARA GERENCIAR QUEM SOMOS
+    // =======================================================
+    async function carregarQuemSomos() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/sobre`);
+            const secoes = await response.json();
+
+            quemSomosTableBody.innerHTML = ''; 
+            if (secoes.length === 0) {
+                quemSomosTableBody.innerHTML = '<tr><td colspan="3">Nenhuma seção cadastrada.</td></tr>';
+                return;
+            }
+
+            secoes.forEach(secao => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${secao.secao}</td>
+                    <td>${secao.titulo}</td>
+                    <td class="actions">
+                        <a class="btn-sm" href="admin_quem_somos_form.html?secao=${secao.secao}">Editar</a>
+                        <button class="btn-sm btn-sm--danger" data-secao="${secao.secao}">Excluir</button>
+                    </td>
+                `;
+                quemSomosTableBody.appendChild(row);
+            });
+
+            document.querySelectorAll('#quemsomos-table-body .btn-sm--danger').forEach(button => {
+                button.addEventListener('click', handleExcluirQuemSomos);
+            });
+
+        } catch (error) {
+            console.error('Erro ao carregar seções "Quem Somos":', error);
+            quemSomosTableBody.innerHTML = '<tr><td colspan="3">Erro ao carregar seções.</td></tr>';
+        }
+    }
+
+    async function handleExcluirQuemSomos(event) {
+        const secao = event.target.dataset.secao;
+        if (confirm(`Tem certeza que deseja excluir a seção "${secao}"?`)) {
+            try {
+                await fetch(`${API_BASE_URL}/sobre/${secao}`, { method: 'DELETE' });
+                alert('Seção excluída com sucesso!');
+                carregarQuemSomos();
+            } catch (error) {
+                console.error('Erro ao excluir seção:', error);
+                alert('Não foi possível excluir a seção.');
+            }
+        }
+    }
+
+    // --- CHAMADAS INICIAIS ---
     carregarServicos();
+    carregarQuemSomos();
 });

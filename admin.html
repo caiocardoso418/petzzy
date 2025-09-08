@@ -32,13 +32,19 @@
         </div>
 
         <div class="card">
-             <div class="admin-section-header">
+            <div class="admin-section-header">
                 <h2>Quem Somos</h2>
-                <a class="btn" href="admin_quem_somos.html">Editar Conteúdo</a>
+                <a class="btn" href="admin_quem_somos_form.html">+ Nova Seção</a>
             </div>
-            <p style="padding: 1rem;">Clique no botão acima para editar os textos das seções institucionais.</p>
+            <table class="table">
+                <thead>
+                    <tr><th>Seção (slug)</th><th>Título</th><th style="width:220px">Ações</th></tr>
+                </thead>
+                <tbody id="quemsomos-table-body">
+                    </tbody>
+            </table>
         </div>
-    </main>
+        </main>
     <script src="js/admin.js"></script>
 </body>
 </html>

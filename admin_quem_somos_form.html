@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Petzzy — Formulário Quem Somos</title>
+    <link rel="stylesheet" href="styles.css"> </head>
+<body>
+    <header class="topbar">
+        <div class="container topbar__inner">
+            <a class="brand" href="admin.html">Petzzy (Admin)</a>
+            <nav class="nav">
+                <a href="admin.html">← Voltar</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container pad-y">
+        <h1 id="form-title">Nova Seção</h1>
+        
+        <form id="quemsomos-form" class="card admin-form">
+            <label for="secao">Seção (identificador único, ex: "nossa-equipe")</label>
+            <input type="text" id="secao" class="input" required>
+            
+            <label for="titulo">Título da Seção</label>
+            <input type="text" id="titulo" class="input" required>
+
+            <label for="texto">Texto da Seção</label>
+            <textarea id="texto" class="input" rows="8"></textarea>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Salvar</button>
+                <a href="admin.html" class="btn btn--ghost">Cancelar</a>
+            </div>
+        </form>
+    </main>
+
+    <footer class="footer">
+        © <span id="year"></span> Petzzy • Todos os direitos reservados
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+    <script src="js/admin_quem_somos_form.js"></script>
+</body>
+</html>
