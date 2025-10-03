@@ -4,19 +4,18 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Petzzy — Entrar</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
 
-  <!-- TOP BAR -->
   <header class="topbar">
     <div class="container topbar__inner">
-      <a class="brand" href="index.html">Petzzy</a>
+      <a class="brand" href="/">Petzzy</a>
       <nav class="nav">
-        <a href="servicos.html">Serviços</a>
-        <a href="agendamentos.html">Meus agendamentos</a>
-        <a href="quem_somos.html">Quem somos</a>
-        <a class="btn" href="login.html">Entrar</a>
+        <a href="/servicos">Serviços</a>
+        <a href="/agendamentos">Meus agendamentos</a>
+        <a href="/quem_somos">Quem somos</a>
+        <a class="btn" href="/login">Entrar</a>
       </nav>
     </div>
   </header>
@@ -25,15 +24,13 @@
     <h1 class="auth__title">Acessar ou criar conta</h1>
 
     <section class="auth__grid">
-      <!-- Coluna: Login -->
       <div class="auth-card">
         <h2 class="h3">Acesse sua conta</h2>
 
-        <!-- Somente front-end: envia para o dashboard como demonstração -->
-        <form class="auth-form" action="dashboard.html" method="get">
-          <label class="label" for="email">E-mail ou CPF/CNPJ</label>
-          <input class="input" id="email" name="email" type="text"
-                 placeholder="Digite seu e-mail ou CPF/CNPJ" required />
+        <form class="auth-form" id="login-form">
+          <label class="label" for="email">E-mail</label>
+          <input class="input" id="email" name="email" type="email"
+                 placeholder="Digite seu e-mail" required />
 
           <div class="pass-row">
             <div class="pass-wrap">
@@ -44,7 +41,7 @@
             <div class="input-icon">
               <input class="input" id="senha" name="senha" type="password"
                      placeholder="Sua senha" minlength="6" required />
-              <button class="toggle-pass" type="button" aria-label="Mostrar senha">👁️</button>
+              <button class="toggle-pass" type="button" data-target="senha" aria-label="Mostrar senha">👁️</button>
             </div>
           </div>
 
@@ -55,14 +52,13 @@
         </form>
       </div>
 
-      <!-- Coluna: Criar conta -->
       <aside class="auth-side">
         <h2>Criar uma conta é rápido,<br />fácil e gratuito!</h2>
         <p>
           Com sua conta Petzzy você acessa serviços perto de você, avaliações de profissionais
           e pode gerenciar seus agendamentos e pets em um só lugar.
         </p>
-        <a class="btn btn--ghost btn--wide" href="cadastro.html">Criar minha conta</a>
+        <a class="btn btn--ghost btn--wide" href="/cadastro">Criar minha conta</a>
       </aside>
     </section>
   </main>
@@ -71,17 +67,7 @@
     © <span id="year"></span> Petzzy • Todos os direitos reservados
   </footer>
 
-  <script>
-    // ano no rodapé
-    document.getElementById('year').textContent = new Date().getFullYear();
-    // alternar exibição da senha
-    (function () {
-      const btn = document.querySelector('.toggle-pass');
-      const input = document.getElementById('senha');
-      btn?.addEventListener('click', () => {
-        input.type = input.type === 'password' ? 'text' : 'password';
-      });
-    })();
-  </script>
+  <script src="/static/js/login.js"></script>
+  <script src="/static/js/main.js"></script>
 </body>
 </html>

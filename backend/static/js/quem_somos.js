@@ -1,59 +1,39 @@
+// static/js/quem_somos.js
 document.addEventListener('DOMContentLoaded', () => {
-            
-    const apiUrl = 'http://127.0.0.1:5000/api';
+    
+    const API_BASE_URL = 'http://127.0.0.1:5000/api';
+    const container = document.getElementById('quem-somos-container');
 
     async function carregarConteudo() {
         try {
-            const response = await fetch(apiUrl);
+            const response = await fetch(`${API_BASE_URL}/sobre`);
+            if (!response.ok) throw new Error('Falha ao carregar conteúdo.');
+            
+            const secoes = await response.json();
 
-            if (!response.ok) {
-                throw new Error(`Erro na rede: ${response.status}`);
-            }
+            container.innerHTML = ''; // Limpa o container
 
-            const dados = await response.json();
-            renderizarDados(dados);
+            // Para cada seção recebida da API, cria um bloco HTML
+            secoes.forEach(secao => {
+                const article = document.createElement('article');
+                article.className = 'card pad-y'; // Usa as classes de estilo que você já tem
+                article.style.marginBottom = '1.5rem';
+
+                article.innerHTML = `
+                    <h2 class="h3">${secao.titulo}</h2>
+                    <div>${secao.texto}</div>
+                `;
+                
+
+                container.appendChild(article);
+            });
 
         } catch (error) {
-            console.error('Falha ao buscar dados da API:', error);
-            // Opcional: Mostrar uma mensagem de erro na página
-                }
-            }
+            container.innerHTML = '<p>Erro ao carregar o conteúdo. Tente novamente mais tarde.</p>';
+            console.error(error);
+        }
+    }
 
-    // Função para colocar os dados nos locais certos do HTML
-    function renderizarDados(dados) {
-        // Encontra o dado de cada seção na lista que veio da API
-        const historia = dados.find(item => item.secao === 'historia');
-        const missao = dados.find(item => item.secao === 'missao');
-        const visao = dados.find(item => item.secao === 'visao');
-        const valores = dados.find(item => item.secao === 'valores');
-
-        if (historia) {
-            document.getElementById('historia-titulo').textContent = historia.titulo;
-            document.getElementById('historia-texto').innerHTML = historia.texto; 
-                }
-
-        // Atualiza a seção "Missão"
-        if (missao) {
-            document.getElementById('missao-titulo').textContent = missao.titulo;
-            document.getElementById('missao-texto').textContent = missao.texto;
-                }
-
-        // Atualiza a seção "Visão"
-        if (visao) {
-            document.getElementById('visao-titulo').textContent = visao.titulo;
-            document.getElementById('visao-texto').textContent = visao.texto;
-                }
-
-        // Atualiza a seção "Valores"
-        if (valores) {
-            document.getElementById('valores-titulo').textContent = valores.titulo;
-            document.getElementById('valores-texto').textContent = valores.texto;
-                }
-            }
-
-            // Atualiza o ano no rodapé
     document.getElementById('year').textContent = new Date().getFullYear();
-
-            // Chama a função principal para iniciar o processo!
     carregarConteudo();
-        });
+});

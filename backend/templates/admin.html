@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
+    <script src="/static/js/admin-guard.js"></script> <header class="topbar"></header>
     <header class="topbar">
         <div class="container topbar__inner">
             <a class="brand" href="#">Petzzy (Admin)</a>
@@ -16,6 +17,15 @@
 
     <main class="container pad-y">
         <h1>Dashboard</h1>
+        <div class="card" style="margin-top:18px">
+            <div class="admin-section-header">
+                <h2>Prestadores de Serviço</h2>
+                <a class="btn" href="/admin_prestadores">Gerenciar Prestadores</a>
+            </div>
+            <p style="padding: 1rem;">
+                Visualize e aprove os cadastros de novos profissionais na plataforma.
+            </p>
+        </div>        
 
         <div class="card" style="margin-bottom:18px">
             <div class="admin-section-header">
@@ -44,7 +54,17 @@
                     </tbody>
             </table>
         </div>
+        <div class="card" style="margin-top:18px;">
+            <div class="admin-section-header">
+                <h2>Usuários</h2>
+                <a class="btn" href="/admin_usuarios">Gerenciar Usuários</a>
+            </div>
+            <p style="padding: 1rem;">
+                Visualize todos os usuários cadastrados na plataforma e gerencie suas permissões.
+            </p>
+        </div>
         </main>
     <script src="/static/js/admin.js"></script>
+    <script src="/static/js/main.js"></script>
 </body>
 </html>

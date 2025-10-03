@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Petzzy — Seja um Prestador</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <script src="/static/js/auth-guard.js"></script> 
+    
+    <header class="topbar">
+        <div class="container topbar__inner">
+            <a class="brand" href="/">Petzzy</a>
+            <nav class="nav">
+                <a href="/servicos">Serviços</a>
+                <a href="/agendamentos">Meus agendamentos</a>
+                <a href="/quem_somos">Quem somos</a>
+                
+                <span id="user-greeting" class="nav-greeting" style="display: none;"></span> 
+                <a id="provider-signup-button" class="btn btn--ghost" href="/seja-um-prestador" style="display: none;">Seja um Prestador</a>
+                <a id="admin-button" class="btn btn--ghost" href="/admin" style="display: none;">Painel Admin</a>
+                <a id="login-button" class="btn" href="/login">Entrar</a>
+                <button id="logout-button" class="btn" style="display: none;">Sair</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container pad-y">
+        <h1>Torne-se um Prestador de Serviços</h1>
+        <p>Preencha seus dados profissionais para começar a oferecer seus serviços na Petzzy.</p>
+        
+        <form id="prestador-form" class="card admin-form" style="margin-top: 2rem;">
+            <label for="nome_comercial">Nome Comercial / Fantasia</label>
+            <input type="text" id="nome_comercial" class="input" required>
+            
+            <label for="cnpj">CNPJ (iremos validar os dados)</label>
+            <input type="text" id="cnpj" class="input" placeholder="00.000.000/0000-00" required>
+
+            <label for="telefone">Telefone para Contato</label>
+            <input type="tel" id="telefone" class="input" placeholder="(XX) XXXXX-XXXX" required>
+
+            <fieldset class="form-fieldset">
+                <legend>Quais serviços você oferece?</legend>
+                <div id="servicos-checkboxes-container" class="checkbox-group">
+                    <p>Carregando serviços...</p>
+                </div>
+            </fieldset>
+            <div class="form-actions">
+                <button type="submit" class="btn">Finalizar Cadastro</button>
+                <a href="/" class="btn btn--ghost">Cancelar</a>
+            </div>
+        </form>
+    </main>
+
+    <footer class="footer">
+         © <span id="year"></span> Petzzy • Todos os direitos reservados
+    </footer>
+
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/seja_um_prestador.js"></script>
+</body>
+</html>

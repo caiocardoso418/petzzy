@@ -17,11 +17,16 @@
         </svg>
         Petzzy
       </a>
-      <nav class="nav" aria-label="Primária">
-        <a href="/servicos">Serviços</a>
-        <a href="/agendamentos">Meus agendamentos</a>
-        <a href="/quem_somos">Quem somos</a>
-        <a class="btn" href="/login">Entrar</a>
+      <nav class="nav">
+          <a href="/servicos">Serviços</a>
+          <a href="/agendamentos">Meus agendamentos</a>
+          <a href="/quem_somos">Quem somos</a>
+          <span id="user-greeting" class="nav-greeting" style="display: none;"></span> 
+          <a id="provider-signup-button" class="btn btn--ghost" href="/seja_um_prestador" style="display: none;">Seja um Prestador</a>
+
+          <a id="admin-button" class="btn btn--ghost" href="/admin" style="display: none;">Painel Admin</a>
+          <a id="login-button" class="btn" href="/login">Entrar</a>
+          <button id="logout-button" class="btn" style="display: none;">Sair</button>
       </nav>
     </div>
   </header>
@@ -155,5 +160,6 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
+  <script src="/static/js/main.js"></script>
 </body>
 </html>

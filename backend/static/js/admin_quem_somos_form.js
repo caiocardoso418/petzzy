@@ -39,6 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
+        // ================= A MUDANÇA ESTÁ AQUI =================
+        // 1. Pega o token salvo no navegador
+        const token = localStorage.getItem('authToken');
+        // =======================================================
+
         const dadosDoForm = {
             secao: document.getElementById('secao').value,
             titulo: document.getElementById('titulo').value,
@@ -51,16 +56,26 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(url, {
                 method: method,
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    // ================= A MUDANÇA ESTÁ AQUI =================
+                    // 2. Envia o token no cabeçalho da requisição
+                    'Authorization': `Bearer ${token}`
+                    // =======================================================
+                },
                 body: JSON.stringify(dadosDoForm),
             });
-            if (!response.ok) throw new Error('Falha ao salvar.');
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.erro || 'Falha ao salvar.');
+            }
 
             alert('Seção salva com sucesso!');
-            window.location.href = 'admin.html';
+            window.location.href = '/admin'; // Redireciona para o dashboard
         } catch (error) {
             console.error('Erro ao salvar:', error);
-            alert('Não foi possível salvar a seção.');
+            alert(`Não foi possível salvar a seção: ${error.message}`);
         }
     });
 

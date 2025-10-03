@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Petzzy — Gerenciar Prestadores</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <script src="/static/js/admin-guard.js"></script> 
+    <header class="topbar">
+        <div class="container topbar__inner">
+            <a class="brand" href="/admin">Petzzy (Admin)</a>
+            <nav class="nav"><a href="/admin">← Voltar ao Dashboard</a></nav>
+        </div>
+    </header>
+
+    <main class="container pad-y">
+        <h1>Gerenciar Prestadores</h1>
+        <div class="card">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#ID</th>
+                        <th>Nome Comercial</th>
+                        <th>Email do Usuário</th>
+                        <th>CNPJ</th>
+                        <th>Status</th>
+                        <th style="width:180px">Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="prestadores-table-body">
+                    </tbody>
+            </table>
+        </div>
+    </main>
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/admin_prestadores.js"></script>
+</body>
+</html>

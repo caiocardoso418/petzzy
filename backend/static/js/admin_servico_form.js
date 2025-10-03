@@ -36,6 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Escuta o evento de submit para salvar (criar ou atualizar)
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
+        
+        // ================= A MUDANÇA ESTÁ AQUI =================
+        // 1. Pega o token salvo no navegador
+        const token = localStorage.getItem('authToken');
+        // =======================================================
 
         const dadosDoForm = {
             slug: document.getElementById('slug').value,
@@ -50,7 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(url, {
                 method: method,
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    // ================= A MUDANÇA ESTÁ AQUI =================
+                    // 2. Envia o token no cabeçalho da requisição
+                    'Authorization': `Bearer ${token}` 
+                    // =======================================================
+                },
                 body: JSON.stringify(dadosDoForm),
             });
 
@@ -60,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             alert('Serviço salvo com sucesso!');
-            window.location.href = 'admin.html'; // Volta para o dashboard
+            window.location.href = '/admin'; // Redireciona para o dashboard
 
         } catch (error) {
             console.error('Erro ao salvar:', error);

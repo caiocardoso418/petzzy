@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const API_BASE_URL = 'http://127.0.0.1:5000/api';
+    const token = localStorage.getItem('authToken');
     
     // --- ELEMENTOS DO DOM ---
     const servicosTableBody = document.getElementById('servicos-table-body');
@@ -45,7 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const slug = event.target.dataset.slug;
         if (confirm(`Tem certeza que deseja excluir o serviço "${slug}"?`)) {
             try {
-                await fetch(`${API_BASE_URL}/servicos/${slug}`, { method: 'DELETE' });
+                const response = await fetch(`${API_BASE_URL}/servicos/${slug}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}` // <-- ADICIONADO AQUI
+                    }
+                });
+                if (!response.ok) throw new Error('Falha ao excluir.');
                 alert('Serviço excluído com sucesso!');
                 carregarServicos();
             } catch (error) {
@@ -94,7 +101,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const secao = event.target.dataset.secao;
         if (confirm(`Tem certeza que deseja excluir a seção "${secao}"?`)) {
             try {
-                await fetch(`${API_BASE_URL}/sobre/${secao}`, { method: 'DELETE' });
+                const response = await fetch(`${API_BASE_URL}/sobre/${secao}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}` 
+                    }
+                });
+                if (!response.ok) throw new Error('Falha ao excluir.');
                 alert('Seção excluída com sucesso!');
                 carregarQuemSomos();
             } catch (error) {
