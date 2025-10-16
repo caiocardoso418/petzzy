@@ -1,45 +1,78 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // Parte 1: Lógica do formulário de cadastro
-    // ===========================================
-    const form = document.getElementById('cadastro-form');
     const API_BASE_URL = 'http://127.0.0.1:5000/api';
 
+    const form = document.getElementById('cadastro-form');
+    const step1Div = document.getElementById('step-1');
+    const step2Div = document.getElementById('step-2');
+    const checkCpfButton = document.getElementById('check-cpf-button');
+    const cpfInput = document.getElementById('cpf');
+
+    let validatedCpf = null; // Para guardar o CPF validado
+
+    // --- LÓGICA DA ETAPA 1: VERIFICAR CPF ---
+    checkCpfButton.addEventListener('click', async () => {
+        const cpf = cpfInput.value;
+        if (!cpf) {
+            alert('Por favor, digite seu CPF.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/cpf-check`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cpf }),
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.erro);
+
+            // CPF válido! Vamos para a próxima etapa.
+            validatedCpf = cpf;
+            step1Div.style.display = 'none';
+            step2Div.style.display = 'block';
+
+        } catch (error) {
+            console.error('Erro na verificação de CPF:', error);
+            alert(`Erro: ${error.message}`);
+        }
+    });
+
+    // --- LÓGICA DA ETAPA 2: FINALIZAR CADASTRO ---
     form.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Impede o recarregamento da página
+        event.preventDefault();
 
         const nome = document.getElementById('nome').value;
         const email = document.getElementById('email').value;
         const senha = document.getElementById('senha').value;
         const confirmarSenha = document.getElementById('confirmar-senha').value;
 
-        // Validação simples no frontend
         if (senha !== confirmarSenha) {
             alert('As senhas não coincidem!');
             return;
         }
 
         try {
-            // Envia os dados para a API de registro
             const response = await fetch(`${API_BASE_URL}/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nome, email, senha }),
+                body: JSON.stringify({
+                    cpf: validatedCpf, // Usa o CPF que já validamos
+                    nome,
+                    email,
+                    senha
+                }),
             });
 
             const data = await response.json();
-            
-            // Se a API retornar um erro (ex: 409 email já existe), exibe a mensagem
-            if (!response.ok) {
-                throw new Error(data.erro || 'Falha no cadastro.');
-            }
+            if (!response.ok) throw new Error(data.erro);
 
             alert('Cadastro realizado com sucesso! Você será redirecionado para a tela de login.');
-            window.location.href = '/login'; // Redireciona para a página de login
+            window.location.href = '/login';
 
         } catch (error) {
             console.error('Erro no cadastro:', error);
-            alert(`Erro no cadastro: ${error.message}`);
+            alert(`Erro ao finalizar cadastro: ${error.message}`);
         }
     });
 
@@ -56,6 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => {
           input.type = input.type === 'password' ? 'text' : 'password';
         });
-      }
+      };
     });
-})();
+});

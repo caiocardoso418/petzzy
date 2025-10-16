@@ -11,18 +11,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const detList = document.getElementById('detList');
     const detCta = document.querySelector(".service-details__cta a");
 
+// static/js/servicos.js
+
     async function carregarListaServicos() {
         try {
             const response = await fetch(`${API_BASE_URL}/servicos`);
             if (!response.ok) throw new Error('Erro ao buscar lista de serviços.');
             
             const servicos = await response.json();
-
             listaContainer.innerHTML = ''; 
+
             servicos.forEach(servico => {
-                const card = document.createElement('button');
+                // ===============================================
+                // ===== MUDANÇA PRINCIPAL: DE <button> PARA <a> =====
+                // ===============================================
+
+                // ANTES era: const card = document.createElement('button');
+                const card = document.createElement('a'); // Agora é um link
+
                 card.className = 'service-card';
                 card.dataset.slug = servico.slug;
+                
+                // Adicionamos o href para levar diretamente à página de busca
+                card.href = `/buscar?q=${encodeURIComponent(servico.nome)}`;
                 
                 card.innerHTML = `
                     <div class="service-card__thumb">
@@ -31,10 +42,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="service-card__name">${servico.nome}</span>
                 `;
                 
-                card.addEventListener('click', () => carregarDetalheServico(servico.slug));
+                // Ao invés de um 'click' para carregar detalhes, vamos usar 'mouseover' (passar o mouse por cima)
+                // Isso mantém a interatividade sem impedir que o link funcione
+                card.addEventListener('mouseover', () => carregarDetalheServico(servico.slug));
+
+                // REMOVEMOS a linha: card.addEventListener('click', ...);
+                
                 listaContainer.appendChild(card);
             });
 
+            // Continuamos carregando o primeiro serviço por padrão
             if (servicos.length > 0) {
                 carregarDetalheServico(servicos[0].slug);
             }

@@ -265,3 +265,85 @@ img{max-width:100%; display:block}
   opacity: 0.8;
   font-size: 0.9em;
 }
+
+/* static/styles.css */
+
+.prestador-card.featured {
+  border: 2px solid var(--primary-color);
+  background-color: #f0f8ff; /* Um azul bem clarinho */
+  position: relative;
+}
+
+.featured-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75em;
+  font-weight: bold;
+}
+
+.grid-prestadores {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.prestador-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.prestador-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.prestador-foto-wrapper {
+  width: 100%;
+  height: 200px; /* Altura fixa para a imagem */
+  background-color: #f0f0f0;
+}
+
+.prestador-foto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Garante que a imagem cubra o espaço sem distorcer */
+}
+
+.prestador-info {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Faz esta área crescer para ocupar o espaço */
+}
+
+.prestador-info h3 {
+  margin: 0 0 0.5rem;
+  color: var(--text-color);
+  font-size: 1.25rem;
+}
+
+.prestador-bio {
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  flex-grow: 1; /* Empurra o contato para o final */
+  margin-bottom: 1rem;
+}
+
+.prestador-contato {
+  margin-top: auto; /* Alinha no final do card */
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  font-weight: bold;
+}

@@ -11,6 +11,7 @@ from db import get_db_connection
 from flask import flash, redirect, url_for
 import re
 import requests
+from validate_docbr import CPF
 
 app = Flask(__name__)
 CORS(app)
@@ -69,65 +70,9 @@ def admin_required(f):
 # --- ROTAS DE API PARA USUÁRIOS (A "BILHETERIA") ---
 # ===================================================================
 
-@app.route('/api/register', methods=['POST'])
-def register():
-    dados = request.get_json()
-    nome, email, senha = dados.get('nome'), dados.get('email'), dados.get('senha')
 
-    if not all([nome, email, senha]):
-        return jsonify({'erro': 'Nome, email e senha são obrigatórios'}), 400
 
-    hashed_password = bcrypt.generate_password_hash(senha).decode('utf-8')
-    
-    conn = get_db_connection()
-    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    try:
-        # Verifica se já existe algum usuário. Se não, o primeiro será admin.
-        cursor.execute("SELECT id FROM usuarios LIMIT 1;")
-        primeiro_usuario = cursor.fetchone()
-        role = 'admin' if primeiro_usuario is None else 'tutor'
 
-        cursor.execute(
-            "INSERT INTO usuarios (nome, email, hashed_password, tipo_usuario) VALUES (%s, %s, %s, %s) RETURNING id, nome, email, tipo_usuario;",
-            (nome, email, hashed_password, role)
-        )
-        novo_usuario = cursor.fetchone()
-        conn.commit()
-    except psycopg2.IntegrityError:
-        conn.rollback()
-        return jsonify({'erro': 'Este email já está cadastrado.'}), 409
-    finally:
-        cursor.close()
-        conn.close()
-
-    return jsonify(novo_usuario), 201
-
-@app.route('/api/login', methods=['POST'])
-def login():
-    dados = request.get_json()
-    email, senha = dados.get('email'), dados.get('senha')
-
-    conn = get_db_connection()
-    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    cursor.execute("SELECT * FROM usuarios WHERE email = %s;", (email,))
-    usuario = cursor.fetchone()
-    cursor.close()
-    conn.close()
-
-    if not usuario or not bcrypt.check_password_hash(usuario['hashed_password'], senha):
-        return jsonify({'erro': 'Email ou senha inválidos'}), 401
-
-    # --- A MUDANÇA ESTÁ AQUI ---
-    # Adicionamos o 'nome' do usuário ao conteúdo do token
-    token = jwt.encode({
-        'user_id': usuario['id'],
-        'tipo_usuario': usuario['tipo_usuario'],
-        'nome': usuario['nome'], # <-- LINHA ADICIONADA
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
-    }, app.config['SECRET_KEY'], algorithm="HS256")
-    # --- FIM DA MUDANÇA ---
-
-    return jsonify({'token': token})
 
 
 # ===================================================================
@@ -360,8 +305,8 @@ def criar_perfil_prestador():
     try:
         # --- TRANSAÇÃO NO BANCO DE DADOS ---
         cursor.execute(
-            "INSERT INTO prestadores (usuario_id, nome_comercial, cnpj, telefone) VALUES (%s, %s, %s, %s) RETURNING id;",
-            (usuario_id, dados.get('nome_comercial'), cnpj, dados.get('telefone'))
+            "INSERT INTO prestadores (usuario_id, nome_comercial, cnpj, telefone, bio) VALUES (%s, %s, %s, %s, %s) RETURNING id;",
+            (usuario_id, dados.get('nome_comercial'), cnpj, dados.get('telefone'), dados.get('bio'))
         )
         novo_prestador_id = cursor.fetchone()['id']
 
@@ -453,6 +398,170 @@ def api_aprovar_prestador(prestador_id):
     cursor.close()
     conn.close()
     return jsonify({'mensagem': 'Prestador aprovado com sucesso!'}), 200
+
+
+
+# app.py
+
+# ===================================================================
+# --- ROTA DE API PARA A BUSCA PÚBLICA DE PRESTADORES ---
+# ===================================================================
+
+@app.route('/api/buscar', methods=['GET'])
+def api_buscar_prestadores():
+    """
+    Busca prestadores com base em um termo de pesquisa (query 'q').
+    O termo de pesquisa corresponde ao NOME de um serviço.
+    """
+    # Pega o termo de busca da URL, ex: /api/buscar?q=Veterinário
+    termo_busca = request.args.get('q')
+
+    if not termo_busca:
+        return jsonify({'erro': 'Termo de busca é obrigatório.'}), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    
+    # Esta query é o coração da busca. Ela junta 3 tabelas.
+    cursor.execute("""
+        SELECT p.id, p.nome_comercial, p.telefone, p.bio, p.foto_perfil_url
+        FROM prestadores p
+        JOIN prestador_servicos ps ON p.id = ps.prestador_id
+        JOIN servicos s ON ps.servico_id = s.id
+        WHERE s.nome ILIKE %s AND p.status = 'aprovado'
+        ORDER BY p.nome_comercial ASC;
+    """, (f'%{termo_busca}%',)) # ILIKE faz a busca ser case-insensitive
+    
+    prestadores_encontrados = cursor.fetchall()
+    
+    cursor.close()
+    conn.close()
+
+    return jsonify(prestadores_encontrados)
+
+@app.route('/api/cpf-check', methods=['POST'])
+def check_cpf():
+    """
+    Primeira etapa do cadastro: valida o CPF e verifica se já existe.
+    """
+    dados = request.get_json()
+    cpf_input = dados.get('cpf')
+    
+    # 1. Validação de formato e autenticidade com a biblioteca
+    cpf_validator = CPF()
+    if not cpf_validator.validate(cpf_input):
+        return jsonify({'erro': 'CPF inválido.'}), 400
+
+    cpf_formatado = cpf_validator.mask(cpf_input)
+
+    # 2. Verifica se o CPF já está cadastrado
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cursor.execute("SELECT id FROM usuarios WHERE cpf = %s;", (cpf_formatado,))
+    usuario_existente = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if usuario_existente:
+        return jsonify({'erro': 'CPF já cadastrado.'}), 409 # 409 Conflict
+
+    # Se chegou aqui, o CPF é válido e está disponível
+    return jsonify({'mensagem': 'CPF válido e disponível.'}), 200
+
+
+@app.route('/api/register', methods=['POST'])
+def register():
+    """
+    Segunda etapa: finaliza o cadastro com os dados restantes.
+    """
+    dados = request.get_json()
+    cpf_input, nome, email, senha = dados.get('cpf'), dados.get('nome'), dados.get('email'), dados.get('senha')
+
+    if not all([cpf_input, nome, email, senha]):
+        return jsonify({'erro': 'Todos os campos são obrigatórios'}), 400
+
+    # Valida e formata o CPF novamente por segurança
+    cpf_validator = CPF()
+    if not cpf_validator.validate(cpf_input):
+        return jsonify({'erro': 'CPF inválido.'}), 400
+    cpf_formatado = cpf_validator.mask(cpf_input)
+    
+    # Validação de email (continua igual)
+    if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+        return jsonify({'erro': 'Formato de email inválido.'}), 400
+
+    hashed_password = bcrypt.generate_password_hash(senha).decode('utf-8')
+    
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    try:
+        cursor.execute("SELECT id FROM usuarios LIMIT 1;")
+        primeiro_usuario = cursor.fetchone()
+        role = 'admin' if primeiro_usuario is None else 'tutor'
+
+        cursor.execute(
+            "INSERT INTO usuarios (cpf, nome, email, hashed_password, tipo_usuario) VALUES (%s, %s, %s, %s, %s) RETURNING id, nome, email, tipo_usuario;",
+            (cpf_formatado, nome, email, hashed_password, role)
+        )
+        novo_usuario = cursor.fetchone()
+        conn.commit()
+    except psycopg2.IntegrityError as e: # Captura erro de CPF ou Email duplicado
+        conn.rollback()
+        return jsonify({'erro': 'CPF ou Email já cadastrado no sistema.'}), 409
+    finally:
+        cursor.close()
+        conn.close()
+
+    return jsonify(novo_usuario), 201
+
+
+# app.py
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    """
+    Atualizado para permitir login com CPF ou Email e com verificação de segurança.
+    """
+    dados = request.get_json()
+    login_input = dados.get('login') # O campo pode ser CPF ou Email
+    senha = dados.get('senha')
+
+    if not login_input or not senha:
+        return jsonify({'erro': 'Login e senha são obrigatórios'}), 400
+
+    # Identifica se o input é um CPF ou um email
+    cpf_validator = CPF()
+    # Limpa o input para uma verificação de CPF mais robusta
+    cpf_limpo = re.sub(r'[^0-9]', '', str(login_input))
+
+    if cpf_validator.validate(cpf_limpo):
+        campo_busca = 'cpf'
+        valor_busca = cpf_validator.mask(cpf_limpo)
+    else:
+        campo_busca = 'email'
+        valor_busca = login_input
+        
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    # A query agora é dinâmica e segura
+    cursor.execute(f"SELECT * FROM usuarios WHERE {campo_busca} = %s;", (valor_busca,))
+    usuario = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+
+    # Se 'usuario' for None, a segunda parte (bcrypt) nem é executada, evitando o erro.
+    if not usuario or not bcrypt.check_password_hash(usuario['hashed_password'], senha):
+        return jsonify({'erro': 'Email ou senha inválidos'}), 401
+
+    token = jwt.encode({
+        'user_id': usuario['id'],
+        'tipo_usuario': usuario['tipo_usuario'],
+        'nome': usuario['nome'],
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+    }, app.config['SECRET_KEY'], algorithm="HS256")
+
+    return jsonify({'token': token})
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

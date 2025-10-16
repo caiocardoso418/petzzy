@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nome_comercial: document.getElementById('nome_comercial').value,
             cnpj: document.getElementById('cnpj').value,
             telefone: document.getElementById('telefone').value,
+            bio: document.getElementById('bio').value,
             servicos_ids: servicos_ids // Envia o array de IDs
         };
 

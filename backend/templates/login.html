@@ -28,10 +28,9 @@
         <h2 class="h3">Acesse sua conta</h2>
 
         <form class="auth-form" id="login-form">
-          <label class="label" for="email">E-mail</label>
-          <input class="input" id="email" name="email" type="email"
-                 placeholder="Digite seu e-mail" required />
-
+          <label class="label" for="login-input">Email ou CPF</label>
+          <input class="input" id="login-input" name="login" type="text"
+                placeholder="Digite seu email ou CPF" required />
           <div class="pass-row">
             <div class="pass-wrap">
               <label class="label" for="senha">Senha</label>
@@ -40,15 +39,12 @@
 
             <div class="input-icon">
               <input class="input" id="senha" name="senha" type="password"
-                     placeholder="Sua senha" minlength="6" required />
+                    placeholder="Sua senha" minlength="6" required />
               <button class="toggle-pass" type="button" data-target="senha" aria-label="Mostrar senha">👁️</button>
             </div>
           </div>
 
           <button class="btn" type="submit">Entrar</button>
-
-          <div class="divider"><span>Acesso Rápido</span></div>
-          <button class="btn btn--ghost" type="button">Receber código de acesso rápido</button>
         </form>
       </div>
 
