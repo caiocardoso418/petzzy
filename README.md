@@ -124,8 +124,9 @@ Siga os passos abaixo para configurar e rodar a aplicação na sua máquina.
 
 -   **Caio Peliz** - Backend
 -   **João Pedro** - Frontend
--   **Juan** - Backend
+-   **Juan Talyson** - Backend
 -   **Maria Elis** - UI/UX Designer
+
 
 
 
