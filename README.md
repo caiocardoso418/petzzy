@@ -1,6 +1,6 @@
 # 🐾 Petzzy
 
-O Petzzy é uma plataforma web desenvolvida como projeto acadêmico da disciplina Projeto Integrador III, com o objetivo de conectar tutores de pets a prestadores de serviços especializados, como banho e tosa, veterinários, passeadores e creches.
+O Petzzy é uma plataforma web desenvolvida como  um projeto acadêmico da disciplina Projeto Integrador III, com o objetivo de conectar tutores de pets a prestadores de serviços especializados, como banho e tosa, veterinários, passeadores e creches.
 
 A aplicação evolui ao longo de Sprints, seguindo metodologia ágil (Scrum), com foco na construção de um MVP funcional.
 
@@ -126,5 +126,6 @@ Siga os passos abaixo para configurar e rodar a aplicação na sua máquina.
 -   **João Pedro** - Frontend
 -   **Juan** - Backend
 -   **Maria Elis** - UI/UX Designer
+
 
 
