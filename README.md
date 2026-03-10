@@ -124,7 +124,7 @@ Siga os passos abaixo para configurar e rodar a aplicação na sua máquina.
 
 -   **Caio Peliz** - tech leader | Desenvolvedor
 -   **Gabriela Ludwig** - PO | Desenvolvedor
--   **Juan Talyson** - DBA
+-   **Juan Talyson** - DBA | Scrum Master
 -   **Maria Elis** - UI/UX Designer
 -   **Carlos Eduardo** - Arquitetura
 
