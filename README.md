@@ -122,11 +122,11 @@ Siga os passos abaixo para configurar e rodar a aplicação na sua máquina.
 
 ## 👥 Equipe
 
--   **Caio Peliz** - tech leader | Desenvolvedor
+-   **Caio Peliz** - Scrum Master | Desenvolvedor
 -   **Gabriela Ludwig** - PO | Desenvolvedor
--   **Juan Talyson** - DBA | Scrum Master
+-   **Juan Talyson** - DBA 
 -   **Maria Elis** - UI/UX Designer
--   **Carlos Eduardo** - Arquitetura
+-   **Carlos Eduardo** - Arquitetura | Tech Leader
 
 ## Slides de Apresentação 
 - **https://www.canva.com/design/DAHDZv622Rw/hYyxRumKWz0USCT8XbstBw/edit?utm_content=DAHDZv622Rw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton**
