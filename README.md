@@ -128,7 +128,7 @@ Siga os passos abaixo para configurar e rodar a aplicação na sua máquina.
 -   **Maria Elis** - UI/UX Designer | Documentação
 -   **Carlos Eduardo** - Arquitetura | Tech Leader
 
-## Slides de Apresentação 
+## Proposta 
 - **https://www.canva.com/design/DAHDZv622Rw/hYyxRumKWz0USCT8XbstBw/edit?utm_content=DAHDZv622Rw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton**
 
 
