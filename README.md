@@ -125,7 +125,7 @@ Siga os passos abaixo para configurar e rodar a aplicação na sua máquina.
 -   **Caio Peliz** - Scrum Master | Desenvolvedor
 -   **Gabriela Ludwig** - PO | Desenvolvedor
 -   **Juan Talyson** - DBA 
--   **Maria Elis** - UI/UX Designer
+-   **Maria Elis** - UI/UX Designer | Documentação
 -   **Carlos Eduardo** - Arquitetura | Tech Leader
 
 ## Slides de Apresentação 
