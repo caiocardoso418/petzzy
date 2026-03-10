@@ -122,10 +122,14 @@ Siga os passos abaixo para configurar e rodar a aplicação na sua máquina.
 
 ## 👥 Equipe
 
--   **Caio Peliz** - Backend
--   **João Pedro** - Frontend
--   **Juan Talyson** - Backend
+-   **Caio Peliz** - tech leader | Desenvolvedor
+-   **Gabriela Ludwig** - PO | Desenvolvedor
+-   **Juan Talyson** - DBA
 -   **Maria Elis** - UI/UX Designer
+-   **Carlos Eduardo** - Arquitetura
+
+## Slides de Apresentação 
+- **https://www.canva.com/design/DAHDZv622Rw/hYyxRumKWz0USCT8XbstBw/edit?utm_content=DAHDZv622Rw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton**
 
 
 
